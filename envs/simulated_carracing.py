@@ -145,7 +145,8 @@ if __name__ == '__main__':
     env.figure.canvas.mpl_connect('key_press_event', on_key_press)
     env.figure.canvas.mpl_connect('key_release_event', on_key_release)
     while True:
-        _, _, done = env.step(action)
+        _, _, terminated, truncated, _ = env.step(action)
+        done = terminated or truncated
         env.render()
         if done:
             break

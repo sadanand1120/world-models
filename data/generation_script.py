@@ -22,9 +22,9 @@ rpt = args.rollouts // args.threads + 1
 def _threaded_generation(i):
     tdir = join(args.rootdir, 'thread_{}'.format(i))
     makedirs(tdir, exist_ok=True)
-    cmd = ['xvfb-run', '-s', '"-screen 0 1400x900x24"']
-    cmd += ['--server-num={}'.format(i + 1)]
-    cmd += ["python", "-m", "data.carracing", "--dir",
+    # cmd = ['xvfb-run', '-s', '"-screen 0 1400x900x24"']
+    # cmd += ['--server-num={}'.format(i + 1)]
+    cmd = ["python", "-m", "data.carracing", "--dir",
             tdir, "--rollouts", str(rpt), "--policy", args.policy]
     cmd = " ".join(cmd)
     print(cmd)

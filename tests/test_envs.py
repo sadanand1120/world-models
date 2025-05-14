@@ -21,7 +21,8 @@ class TestEnvs(unittest.TestCase):
             env.action_space, seq_len, 1. / FPS)
         for i in range(seq_len):
             action = actions[i]
-            next_obs, reward, terminal = env.step(action)
+            next_obs, reward, terminated, truncated, _ = env.step(action)
+            terminal = terminated or truncated
             env.render()
             print(next_obs.shape, reward)
             if terminal:

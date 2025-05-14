@@ -7,3 +7,5 @@ Dockerfile
 frames/
 dock_config.json
 .mypy_cache
+
+.vscode/

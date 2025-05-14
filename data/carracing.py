@@ -7,17 +7,17 @@ from os.path import join, exists
 import gym
 import numpy as np
 from utils.misc import sample_continuous_policy
+from tqdm.auto import tqdm
 
 def generate_data(rollouts, data_dir, noise_type): # pylint: disable=R0914
     """ Generates data """
     assert exists(data_dir), "The data directory does not exist..."
 
-    env = gym.make("CarRacing-v0")
+    env = gym.make("CarRacing-v2")
     seq_len = 1000
 
-    for i in range(rollouts):
+    for i in tqdm(range(rollouts), desc="Generating data", unit="rollout"):
         env.reset()
-        env.env.viewer.window.dispatch_events()
         if noise_type == 'white':
             a_rollout = [env.action_space.sample() for _ in range(seq_len)]
         elif noise_type == 'brown':
@@ -32,13 +32,13 @@ def generate_data(rollouts, data_dir, noise_type): # pylint: disable=R0914
             action = a_rollout[t]
             t += 1
 
-            s, r, done, _ = env.step(action)
-            env.env.viewer.window.dispatch_events()
+            s, r, terminated, truncated, info = env.step(action)
+            done = terminated or truncated
             s_rollout += [s]
             r_rollout += [r]
             d_rollout += [done]
             if done:
-                print("> End of rollout {}, {} frames...".format(i, len(s_rollout)))
+                # print("> End of rollout {}, {} frames...".format(i, len(s_rollout)))
                 np.savez(join(data_dir, 'rollout_{}'.format(i)),
                          observations=np.array(s_rollout),
                          rewards=np.array(r_rollout),

@@ -16,10 +16,12 @@ class _RolloutDataset(torch.utils.data.Dataset): # pylint: disable=too-few-publi
             for sd in listdir(root) if isdir(join(root, sd))
             for ssd in listdir(join(root, sd))]
 
+        test_perc = 0.2
+        num_test_files = int(len(self._files) * test_perc)
         if train:
-            self._files = self._files[:-600]
+            self._files = self._files[:-num_test_files]
         else:
-            self._files = self._files[-600:]
+            self._files = self._files[-num_test_files:]
 
         self._cum_size = None
         self._buffer = None
@@ -37,7 +39,7 @@ class _RolloutDataset(torch.utils.data.Dataset): # pylint: disable=too-few-publi
 
         # progress bar
         pbar = tqdm(total=len(self._buffer_fnames),
-                    bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt} {postfix}')
+                    bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt} {postfix}', disable=True)
         pbar.set_description("Loading file buffer ...")
 
         for f in self._buffer_fnames:
