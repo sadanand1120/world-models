@@ -137,7 +137,7 @@ class RolloutGenerator(object):
                 ctrl_state['reward']))
             self.controller.load_state_dict(ctrl_state['state_dict'])
 
-        self.env = gym.make('CarRacing-v2')
+        self.env = gym.make('CarRacing-v2', render_mode='human')
         self.device = device
 
         self.time_limit = time_limit

@@ -18,4 +18,4 @@ device = torch.device('cpu')
 generator = RolloutGenerator(args.logdir, device, 1000)
 
 with torch.no_grad():
-    generator.rollout(None)
+    print(generator.rollout(None))
